@@ -3,7 +3,8 @@ import java.util.Scanner;
 public class jogodavelha {
 
     private int jogo[][] = new int[3][3];
-
+    
+    //adere inicialmente os valores da tabela como 0
     public jogodavelha() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -11,7 +12,8 @@ public class jogodavelha {
             }
         }
     }
-
+    
+    //percorre as linhas e colunas para exibir as linhas e colunas atuais
     public void mostrar() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -20,7 +22,8 @@ public class jogodavelha {
             System.out.println();
         }
     }
-
+    
+    
     public int verificarVencedor() {
         for (int i = 0; i < 3; i++) {
             if ((jogo[i][0] == jogo[i][1])
@@ -58,42 +61,58 @@ public class jogodavelha {
     }
 
     public boolean efetuarJogada(int jogador, int linha, int coluna) {
+        //se o valor inserido na linha for menor que 0 ou maior que 2, retorna como falso(invalido)
         if ((linha < 0) || (linha > 2)) {
             return false;
         }
+        //se o valor inserido na coluna for menor que 0 ou maior que 2, retorna como falso(invalido)
         if ((coluna < 0) || (coluna > 2)) {
             return false;
         }
+        //se o valor inserido na linha ou coluna for um numero real, retorna como falso(invalido)
         if (jogo[linha][coluna] != 0) {
             return false;
         }
+        //se o valor for um numero inteiro, efetua retorna verdadeiro(conclui a jogada)
         jogo[linha][coluna] = jogador;
         return true;
     }
 
     public static void main(String[] argumentos) {
         Scanner teclado = new Scanner(System.in);
+        //declaração de scanner para ler valores
         jogodavelha jogo = new jogodavelha();
+        //declaração de função para atribuir o valor 0 as linhas e colunas da exibição
         int jogador = 1;
         int vencedor = jogo.verificarVencedor();
         jogo.mostrar();
         while (vencedor == 0) {
+            //exibe qual a vez do jogador
             System.out.println("Jogador " + jogador);
+            //solicita adesão ao valor da linha
             System.out.print("Linha: ");
             int linha = teclado.nextInt();
+            //solicita adesão ao valor da coluna
             System.out.print("Coluna: ");
             int coluna = teclado.nextInt();
+            //se o valor inserido for negativo, não adere valor a linha/coluna
             if (!jogo.efetuarJogada(jogador, linha - 1, coluna - 1)) {
                 System.out.println("Jogada inválida...");
             } else {
+                
                 jogador = (jogador == 1) ? 2 : 1;
             }
+            //mostra a tabela do jogo com os novos valores inseridos
             jogo.mostrar();
+            //chama a função verificarVencedor para exibir o vencedor a cada rodada
             vencedor = jogo.verificarVencedor();
         }
         switch (vencedor) {
+            //se vencedor = 1, entao exibe o jogador 1 como vencedor
             case 1 -> System.out.println("Vencedor jogador 1");
+            //se vencedor = 2, entao exibe o jogador 2 como vencedor
             case 2 -> System.out.println("Vencedor jogador 2");
+            //se vencedor = 3, entao exibe empate
             case 3 -> System.out.println("Empate");
         }
     }
